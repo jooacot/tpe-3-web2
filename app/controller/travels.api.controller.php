@@ -15,9 +15,24 @@ class TravelsApiController extends ApiController
 
     function get($params = [])
     {
-       
         if (empty($params)) {
-            $travels = $this->model->getTravels();
+   
+            $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
+            $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
+      
+            $orderQuery = '';
+            $acceptedOrders = ['ASC','DESC'];
+      
+            if (isset($sort)) {
+              if ($this->model->viajesHasColumn($sort) && in_array(strtoupper($order),$acceptedOrders)) {
+                $orderQuery = 'ORDER BY '.$sort.' '.$order;
+              }else{
+                $this->view->response(['response' => 'Bad Request'],400);
+                return;
+              }
+            }
+            
+            $travels = $this->model->getTravels($orderQuery);
             $this->view->response($travels, 200);
         } else {
             $id = $params[':ID'];
@@ -63,9 +78,9 @@ class TravelsApiController extends ApiController
 
             $this->model->updateTravel($destino, $precio, $fecha_ida, $fecha_vuelta, $id_usuario, $id);
 
-            $this->view->response('El viaje con id= '.$id.' ha sido modificado.', 200);
+            $this->view->response('El viaje con id = '.$id.' ha sido modificado.', 200);
         } else {
-            $this->view->response('El viaje con id= '.$id.' no existe.', 404);
+            $this->view->response('El viaje con id = '.$id.' no existe.', 404);
         }
     }
 

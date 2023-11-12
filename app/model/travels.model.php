@@ -5,8 +5,8 @@ class TravelsModel extends Model{
     {
         parent::__contruct();
     }
-    function getTravels(){
-        $query = $this->db->prepare('SELECT * FROM viajes');
+    function getTravels($orderQuery = ''){
+        $query = $this->db->prepare('SELECT * FROM viajes '.$orderQuery);
         $query->execute();
         $travels = $query->fetchAll(PDO::FETCH_OBJ);
         return $travels;
@@ -36,4 +36,13 @@ class TravelsModel extends Model{
         $query->execute([$destino, $precio, $fecha_ida, $fecha_vuelta, $id_usuario, $id_viajes]);   
         return $query;
     }
+
+
+    function viajesHasColumn($column){
+        $query = $this->db->prepare("DESCRIBE viajes");
+        $query->execute();
+        $columnas = $query->fetchAll(PDO::FETCH_COLUMN);
+  
+        return in_array($column,$columnas);
+      }
 }
