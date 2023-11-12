@@ -1,5 +1,5 @@
-Miembro 1: Joaquin Troncoso (@joaquintroncoso2001).
-Miebro 2: Juan Altamiranda Garralda (juanaltamiranda2003@hotmail.com).
+Miembro 1: Joaquin Troncoso.
+Miebro 2: Juan Altamiranda Garralda.
 
 La temática del tpe es una empresa de viajes a larga distancia.
 
