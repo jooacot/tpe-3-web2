@@ -32,7 +32,7 @@ class TravelsApiController extends ApiController
             }
         }
     }
-    function create($params = []) {
+    function create() {
         $body = $this->getData();
 
         $destino = $body->destino;
@@ -48,7 +48,24 @@ class TravelsApiController extends ApiController
             $travel = $this->model->getDetailsById($id);
             $this->view->response($travel, 201);
         }
-
     }
+    function update($params = []) {
+        $id = $params[':ID'];
+        $travel = $this->model->getDetailsById($id);
 
+        if($travel) {
+            $body = $this->getData();
+            $destino = $body->destino;
+            $precio = $body->precio;
+            $fecha_ida = $body->fecha_ida;
+            $fecha_vuelta = $body->fecha_vuelta;
+            $id_usuario = $body->id_usuario;
+
+            $this->model->updateTravel($destino, $precio, $fecha_ida, $fecha_vuelta, $id_usuario, $id);
+
+            $this->view->response('El viaje con id='.$id.' ha sido modificada.', 200);
+        } else {
+            $this->view->response('La tarea con id='.$id.' no existe.', 404);
+        }
+    }
 }
