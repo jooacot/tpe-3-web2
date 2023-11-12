@@ -7,5 +7,5 @@ $router = new Router();
 //                 endpoint      verbo   controller            funcion
 $router->addRoute('viajes',     'GET', 'TravelsApiController', 'get');
 $router->addRoute('viajes/:ID', 'GET', 'TravelsApiController', 'get');
-
+$router->addRoute('viajes',     'POST', 'TravelsApiController', 'create');
 $router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);

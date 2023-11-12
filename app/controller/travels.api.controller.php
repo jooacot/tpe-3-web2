@@ -1,37 +1,54 @@
 <?php
 
 require_once './app/model/travels.model.php';
-require_once './app/views/api.view.php';
+require_once './app/controller/api.controller.php';
 
-class TravelsApiController
+class TravelsApiController extends ApiController
 {
     private $model;
-    private $view;
-    function __construct()
-    {
+    
+
+    function __construct() {
+        parent::__construct();
         $this->model = new TravelsModel();
-        $this->view = new ApiView();
     }
+
     function get($params = [])
     {
-        $id = $params[':ID'];
+       
         if (empty($params)) {
             $travels = $this->model->getTravels();
             $this->view->response($travels, 200);
         } else {
-            $travel = $this->model->getDetailsById($id);
-            var_dump($travel);
-            if ($travel) {
+            $id = $params[':ID'];
+            $travel = $this->model->getDetailsById($id); 
+             if ($travel) {
                 $this->view->response($travel, 200);
             } else {
                 $this->view->response(
-                    ['error' => 'la tarea con el id ' . $id . 'no existe'],
+                    ['error' => 'la tarea con el id ' . $id . ' no existe'],
                     404
                 );
             }
         }
     }
-    function create(){
-        
+    function create($params = []) {
+        $body = $this->getData();
+
+        $destino = $body->destino;
+        $precio = $body->precio;
+        $fecha_ida = $body->fecha_ida;
+        $fecha_vuelta = $body->fecha_vuelta;
+        $id_usuario = $body->id_usuario;
+
+        if (empty($destino) || empty($precio) || empty($fecha_ida) || empty($fecha_vuelta) || empty($id_usuario))  {
+            $this->view->response("Faltan completar datos", 400);
+        } else {
+            $id = $this->model->insertTravel($destino, $precio, $fecha_ida, $fecha_vuelta, $id_usuario);
+            $travel = $this->model->getDetailsById($id);
+            $this->view->response($travel, 201);
+        }
+
     }
+
 }
