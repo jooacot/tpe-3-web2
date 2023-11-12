@@ -63,9 +63,24 @@ class TravelsApiController extends ApiController
 
             $this->model->updateTravel($destino, $precio, $fecha_ida, $fecha_vuelta, $id_usuario, $id);
 
-            $this->view->response('El viaje con id='.$id.' ha sido modificada.', 200);
+            $this->view->response('El viaje con id= '.$id.' ha sido modificado.', 200);
         } else {
-            $this->view->response('La tarea con id='.$id.' no existe.', 404);
+            $this->view->response('El viaje con id= '.$id.' no existe.', 404);
         }
+    }
+
+    function delete($params = []) {
+        
+            $id = $params[':ID'];
+            $travel = $this->model->getDetailsById($id);
+
+            if($travel) {
+                $this->model->deleteTravel($id);
+                $this->view->response('El viaje con id = '.$id.' ha sido borrado.', 200);
+            } else {
+                $this->view->response('El viaje con id = '.$id.' no existe.', 404);
+            }
+        
+
     }
 }
