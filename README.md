@@ -1,5 +1,5 @@
 Miembro 1: Joaquin Troncoso.
-Miebro 2: Juan Altamiranda Garralda.
+Miembro 2: Juan Altamiranda Garralda.
 
 La temática del tpe es una empresa de viajes a larga distancia.
 
