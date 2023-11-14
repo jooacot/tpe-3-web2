@@ -32,3 +32,7 @@ campos necesarios: {"destino": varchar, "precio": int, "fecha_ida": varchar, "fe
 
 DELETE viajes/:id
 
+**Paginado de viajes**
+Por ejemplo:
+GET viajes?page=3
+
