@@ -5,8 +5,8 @@ class TravelsModel extends Model{
     {
         parent::__contruct();
     }
-    function getTravels($orderQuery = ''){
-        $query = $this->db->prepare('SELECT * FROM viajes '.$orderQuery);
+    function getTravels($page = 1,$orderQuery = ''){
+        $query = $this->db->prepare('SELECT * FROM viajes '.$orderQuery.' LIMIT 5 OFFSET '.(($page-1)*5));
         $query->execute();
         $travels = $query->fetchAll(PDO::FETCH_OBJ);
         return $travels;

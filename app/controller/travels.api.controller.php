@@ -16,7 +16,8 @@ class TravelsApiController extends ApiController
     function get($params = [])
     {
         if (empty($params)) {
-   
+            $num = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $page = $num > 0? $num : 1;
             $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
             $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
       
@@ -31,22 +32,22 @@ class TravelsApiController extends ApiController
                 return;
               }
             }
-            
-            $travels = $this->model->getTravels($orderQuery);
-            $this->view->response($travels, 200);
-        } else {
-            $id = $params[':ID'];
-            $travel = $this->model->getDetailsById($id); 
-             if ($travel) {
-                $this->view->response($travel, 200);
-            } else {
-                $this->view->response(
-                    ['error' => 'la tarea con el id ' . $id . ' no existe'],
-                    404
-                );
+            $travels = $this->model->getTravels($page,$orderQuery);
+            if (isset($travels)) {
+              $this->view->response($travels,200);
+            }else{
+              $this->view->response(['response' => 'Bad Request'],400);
             }
-        }
-    }
+          }else{
+            $travels = $this->model->getDetailsById($params[':ID']);
+            
+            if (!empty($travels)) {
+              $this->view->response($travels,200);
+            }else{
+              $this->view->response(['response' => 'Not Found'],404);
+            }
+          }
+      }
     function create() {
         $body = $this->getData();
 
